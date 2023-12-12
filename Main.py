@@ -25,7 +25,7 @@ class MelonGame:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     self.quit_game()
-                self.fruits.update(event)
+            self.fruits.update(event)
 
             self.screen.blit(self.background, self.background_rect)
             self.fruit_container.update(self.screen)

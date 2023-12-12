@@ -23,5 +23,8 @@ class Fruits:
             self.vel += self.acc
             self.pos += self.vel + 0.5 * self.acc
 
+    def moving_on_x_axis():
+        pass
+
     def draw(self, screen):
         pygame.draw.circle(screen, self.color, (int(self.pos[0]), int(self.pos[1])), self.radius)
