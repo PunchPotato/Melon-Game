@@ -25,11 +25,11 @@ class MelonGame:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     self.quit_game()
+                self.fruits.update(event)
 
             self.screen.blit(self.background, self.background_rect)
             self.fruit_container.update(self.screen)
             self.fruits.draw(self.screen)
-            self.fruits.update()
 
             pygame.display.flip()
             pygame.time.Clock().tick(60)
