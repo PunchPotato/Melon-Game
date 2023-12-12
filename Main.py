@@ -3,6 +3,7 @@ import pygame
 import sys
 from fruit_container import FruitContainer
 from config import image_folder
+from fruits import Fruits
 
 class MelonGame:
     def __init__(self):
@@ -17,6 +18,7 @@ class MelonGame:
         self.background_rect = self.background.get_rect()
 
         self.fruit_container = FruitContainer() 
+        self.fruits = Fruits()
 
     def run(self):
         while True:
@@ -26,6 +28,8 @@ class MelonGame:
 
             self.screen.blit(self.background, self.background_rect)
             self.fruit_container.update(self.screen)
+            self.fruits.draw(self.screen)
+            self.fruits.update()
 
             pygame.display.flip()
             pygame.time.Clock().tick(60)
