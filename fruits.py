@@ -13,18 +13,25 @@ class Fruits:
 
     def update(self, event):
         if event.type == pygame.MOUSEBUTTONDOWN:
-            print("Mouse button pressed")
             self.mouse_button_pressed = True
-        else:
-            print("Mouse button released")
         
         if self.mouse_button_pressed == True:
             self.acc.x += self.vel.x * self.friction
             self.vel += self.acc
             self.pos += self.vel + 0.5 * self.acc
+        elif self.mouse_button_pressed == False:
+            self.moving_on_x_axis()
 
-    def moving_on_x_axis():
-        pass
+    def moving_on_x_axis(self):
+        mouse_x, mouse_y = pygame.mouse.get_pos()
+        self.pos.x += (mouse_x - self.pos.x) * 0.1
+        self.pos.y = 100
+        
+        if self.pos.x <= 730: 
+            self.pos.x = 730
+        elif self.pos.x >= 1252:
+            self.pos.x = 1252
+
 
     def draw(self, screen):
         pygame.draw.circle(screen, self.color, (int(self.pos[0]), int(self.pos[1])), self.radius)
