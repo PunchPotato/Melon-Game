@@ -54,16 +54,9 @@ class Fruits:
         )
 
         if fruit_rect.colliderect(fruit_container_rect) and fruit_rect.bottom >= fruit_container_rect.bottom:
-            self.collision_detected == True
-            if self.vel.y > 0 and self.current_time >= 500:
+            if self.vel.y > 0:
                 self.vel.y = -self.vel.y / 2
                 self.pos.y = min(fruit_rect.bottom, fruit_container_rect.bottom)
-        else:
-            self.collision_detected == False
-
-        if self.collision_detected:
-            self.current_time = 0
-            print(self.current_time)
                 
     def draw(self, screen):
         pygame.draw.circle(screen, self.color, (int(self.pos[0]), int(self.pos[1])), self.radius)
