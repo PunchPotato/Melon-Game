@@ -13,5 +13,8 @@ class FruitContainer:
         self.fruit_container_rect.x = 650
         self.fruit_container_rect.y = 132
 
+        self.width = self.fruit_container_rect.width
+        self.height = self.fruit_container_rect.height
+
     def update(self, screen):
         screen.blit(self.fruit_container, self.fruit_container_rect)
