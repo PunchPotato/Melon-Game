@@ -48,7 +48,7 @@ class Fruits:
     
         fruit_container_rect = pygame.Rect(
             self.fruit_container.fruit_container_rect.x,
-            self.fruit_container.fruit_container_rect.y,
+            self.fruit_container.fruit_container_rect.y + 30,
             self.fruit_container.width,
             self.fruit_container.height
         )
@@ -57,6 +57,14 @@ class Fruits:
             if self.vel.y > 0:
                 self.vel.y = -self.vel.y / 2
                 self.pos.y = min(fruit_rect.bottom, fruit_container_rect.bottom)
+
+        if fruit_rect.colliderect(fruit_container_rect) and fruit_rect.left >= fruit_container_rect.left:
+            if self.vel.x > 0:
+                self.vel.x = -self.vel.y / 2
+        
+        if fruit_rect.colliderect(fruit_container_rect) and fruit_rect.right >= fruit_container_rect.right:
+            if self.vel.x > 0:
+                self.vel.x = -self.vel.y / 2
                 
     def draw(self, screen):
         pygame.draw.circle(screen, self.color, (int(self.pos[0]), int(self.pos[1])), self.radius)
