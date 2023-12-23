@@ -4,10 +4,10 @@ vector=pygame.Vector2
 from fruit_container import FruitContainer
 
 class Fruits:
-    def __init__(self):
+    def __init__(self, initial_position):
         self.radius = 15
         self.color = "red"
-        self.pos = vector((600, 00))
+        self.pos = vector(initial_position)
         self.vel = vector(0, 0)
         self.acc = vector(0, 0.45)
         self.friction = -0.12
@@ -17,6 +17,7 @@ class Fruits:
         self.fruits_list = []
         self.radius = random.randint(10, 30)
         self.color = (random.randint(0, 255), random.randint(0, 255), random.randint(0, 255))
+        self.follow_mouse = False
 
         self.start_point = (675, 977)
         self.end_point = (1322, 977)
@@ -28,9 +29,10 @@ class Fruits:
             self.mouse_button_pressed = True
 
         if self.mouse_button_pressed:
-            self.acc.x += self.vel.x * self.friction
-            self.vel += self.acc
-            self.pos += self.vel + 0.5 * self.acc
+            for fruit in self.fruits_list[:-1]:
+                fruit.acc.x += fruit.vel.x * fruit.friction
+                fruit.vel += fruit.acc
+                fruit.pos += fruit.vel + 0.5 * fruit.acc
         else:
             self.moving_on_x_axis()
 
@@ -38,20 +40,24 @@ class Fruits:
 
         if event.type == pygame.MOUSEBUTTONUP and self.mouse_button_pressed:
             self.mouse_button_pressed = False
-            self.spawn_new_fruit()   
+            self.spawn_new_fruit()
 
     def spawn_new_fruit(self):
-        new_fruit = Fruits((self.pos.x, 0))
+        new_fruit = Fruits((self.pos.x, 100))
         self.fruits_list.append(new_fruit)
-        #fix it
+        self.follow_mouse = True
 
     def moving_on_x_axis(self):
         mouse_x, mouse_y = pygame.mouse.get_pos()
         interpolation_factor = 0.1
         self.pos.x += (mouse_x - self.pos.x) * interpolation_factor
-        self.pos.y = 100
 
-        self.pos.x = max(710, min(self.pos.x, 1272))
+        if self.follow_mouse:
+            # Update the position of the last fruit to follow the mouse on the x-axis
+            self.fruits_list[-1].pos.x = mouse_x  # Assuming mouse_x is the current mouse x-coordinate
+            self.fruits_list[-1].pos.y = 100  # Set y-coordinate as needed
+
+            self.fruits_list[-1].pos.x = max(710, min(self.pos.x, 1272))
 
     def container_collision(self, screen):
         fruit_rect = pygame.Rect(self.pos.x - self.radius, self.pos.y - self.radius, 2 * self.radius, 2 * self.radius)
@@ -64,18 +70,15 @@ class Fruits:
         )
 
         if fruit_rect.colliderect(fruit_container_rect) and fruit_rect.bottom >= fruit_container_rect.bottom:
-            self.spawn_new_fruit()
             if self.vel.y > 0:
                 self.vel.y = -self.vel.y / 2
                 self.pos.y = min(fruit_rect.bottom, fruit_container_rect.bottom)
 
         if fruit_rect.colliderect(fruit_container_rect) and fruit_rect.right >= fruit_container_rect.left:
-            self.spawn_new_fruit()
             if self.vel.x > 0:
                 self.vel.x = -self.vel.x / 2
         
         if fruit_rect.colliderect(fruit_container_rect) and fruit_rect.left <= fruit_container_rect.right:
-            self.spawn_new_fruit()
             if self.vel.x < 0:
                 self.vel.x = -self.vel.x / 2
                 

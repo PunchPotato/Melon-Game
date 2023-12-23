@@ -18,7 +18,7 @@ class MelonGame:
         self.background_rect = self.background.get_rect()
 
         self.fruit_container = FruitContainer() 
-        self.fruits = Fruits()
+        self.fruits = Fruits((600, 0))
 
     def run(self):
         while True:
