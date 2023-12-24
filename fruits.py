@@ -18,6 +18,7 @@ class Fruits:
         self.radius = random.randint(10, 30)
         self.color = (random.randint(0, 255), random.randint(0, 255), random.randint(0, 255))
         self.follow_mouse = False
+        self.collision_detected = False
 
         self.start_point = (675, 977)
         self.end_point = (1322, 977)
@@ -91,10 +92,17 @@ class Fruits:
                     other_fruit_rect = pygame.Rect(other_fruit.pos.x - other_fruit.radius, other_fruit.pos.y - other_fruit.radius, 2 * other_fruit.radius, 2 * other_fruit.radius)
 
                     if fruit_rect.colliderect(other_fruit_rect):
-                        fruit.vel.x = -fruit.vel.x / 2
-                        fruit.vel.y = -fruit.vel.y / 2
-                        other_fruit.vel.x = -other_fruit.vel.x / 2
-                        other_fruit.vel.y = -other_fruit.vel.y / 2
+                        if not fruit.collision_detected:
+                            fruit.collision_detected = True
+                            other_fruit.collision_detected = True
+
+                            fruit.vel.x = -fruit.vel.x / 2
+                            fruit.vel.y = -fruit.vel.y / 2
+                            other_fruit.vel.x = -other_fruit.vel.x / 2
+                            other_fruit.vel.y = -other_fruit.vel.y / 2
+                        else:
+                            fruit.collision_detected = False
+                            other_fruit.collision_detected = False
                 
     def draw(self, screen):
         for fruit in self.fruits_list:
