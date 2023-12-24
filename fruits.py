@@ -85,8 +85,17 @@ class Fruits:
             if fruit_rect.colliderect(fruit_container_rect) and fruit_rect.left <= fruit_container_rect.right:
                 if fruit.vel.x < 0:
                     fruit.vel.x = -fruit.vel.x / 2
+
+            for other_fruit in self.fruits_list:
+                if fruit != other_fruit:
+                    other_fruit_rect = pygame.Rect(other_fruit.pos.x - other_fruit.radius, other_fruit.pos.y - other_fruit.radius, 2 * other_fruit.radius, 2 * other_fruit.radius)
+
+                    if fruit_rect.colliderect(other_fruit_rect):
+                        fruit.vel.x = -fruit.vel.x / 2
+                        fruit.vel.y = -fruit.vel.y / 2
+                        other_fruit.vel.x = -other_fruit.vel.x / 2
+                        other_fruit.vel.y = -other_fruit.vel.y / 2
                 
     def draw(self, screen):
         for fruit in self.fruits_list:
             pygame.draw.circle(screen, fruit.color, (int(fruit.pos[0]), int(fruit.pos[1])), fruit.radius)
-        pygame.draw.line(screen, "black", self.start_point, self.end_point, self.line_width)
