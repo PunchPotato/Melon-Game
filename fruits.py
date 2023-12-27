@@ -79,11 +79,11 @@ class Fruits:
                     fruit.vel.y = -fruit.vel.y / 2
                     fruit.pos.y = min(fruit_rect.bottom, fruit_container_rect.bottom)
 
-            if fruit_rect.colliderect(fruit_container_rect) and fruit_rect.right >= fruit_container_rect.left:
+            if fruit_rect.colliderect(fruit_container_rect) and fruit_rect.right >= fruit_container_rect.right:
                 if fruit.vel.x > 0:
                     fruit.vel.x = -fruit.vel.x / 2
             
-            if fruit_rect.colliderect(fruit_container_rect) and fruit_rect.left <= fruit_container_rect.right:
+            if fruit_rect.colliderect(fruit_container_rect) and fruit_rect.left <= fruit_container_rect.left:
                 if fruit.vel.x < 0:
                     fruit.vel.x = -fruit.vel.x / 2
 
@@ -96,10 +96,25 @@ class Fruits:
                             fruit.collision_detected = True
                             other_fruit.collision_detected = True
 
-                            fruit.vel.x = -fruit.vel.x / 2
-                            fruit.vel.y = -fruit.vel.y / 2
-                            other_fruit.vel.x = -other_fruit.vel.x / 2
-                            other_fruit.vel.y = -other_fruit.vel.y / 2
+                            # Adjust the division factor as needed
+                            division_factor = 2
+
+                            fruit.vel.x = -fruit.vel.x / division_factor
+                            fruit.vel.y = -fruit.vel.y / division_factor
+                            other_fruit.vel.x = -other_fruit.vel.x / division_factor
+                            other_fruit.vel.y = -other_fruit.vel.y / division_factor
+
+                            # Check if velocities are too small and set them to zero
+                            min_velocity_threshold = 0.1
+                            if abs(fruit.vel.x) < min_velocity_threshold:
+                                fruit.vel.x = 0
+                            if abs(fruit.vel.y) < min_velocity_threshold:
+                                fruit.vel.y = 0
+                            if abs(other_fruit.vel.x) < min_velocity_threshold:
+                                other_fruit.vel.x = 0
+                            if abs(other_fruit.vel.y) < min_velocity_threshold:
+                                other_fruit.vel.y = 0
+
                         else:
                             fruit.collision_detected = False
                             other_fruit.collision_detected = False
