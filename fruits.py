@@ -43,7 +43,7 @@ class Fruits:
 
         if event.type == pygame.MOUSEBUTTONUP and self.mouse_button_pressed:
             self.mouse_button_pressed = False
-            self.spawn_new_fruit()
+            self.spawn_new_fruit()  
 
     def spawn_new_fruit(self):
         new_fruit = Fruits((self.pos.x, 100))
@@ -63,9 +63,9 @@ class Fruits:
             self.fruits_list[-1].pos.x = max(710, min(self.pos.x, 1272))
 
     def container_collision(self, screen):
-         for fruit in self.fruits_list:
+        for fruit in self.fruits_list:
             fruit_rect = pygame.Rect(fruit.pos.x - fruit.radius, fruit.pos.y - fruit.radius, 2 * fruit.radius, 2 * fruit.radius)
-            
+
             fruit_container_rect = pygame.Rect(
                 self.fruit_container.fruit_container_rect.x,
                 self.fruit_container.fruit_container_rect.y,
@@ -73,20 +73,26 @@ class Fruits:
                 self.fruit_container.height
             )
 
+            # Bottom Collision
             if fruit_rect.colliderect(fruit_container_rect) and fruit_rect.bottom >= fruit_container_rect.bottom:
                 if fruit.vel.y > 0:
-                    
                     fruit.vel.y = -fruit.vel.y / 2
                     fruit.pos.y = min(fruit_rect.bottom, fruit_container_rect.bottom)
+                    
 
+            # Right Collision
             if fruit_rect.colliderect(fruit_container_rect) and fruit_rect.right >= fruit_container_rect.right:
                 if fruit.vel.x > 0:
                     fruit.vel.x = -fruit.vel.x / 2
-            
+                    
+
+            # Left Collision
             if fruit_rect.colliderect(fruit_container_rect) and fruit_rect.left <= fruit_container_rect.left:
                 if fruit.vel.x < 0:
                     fruit.vel.x = -fruit.vel.x / 2
+                    
 
+            # Other Fruits Collision
             for other_fruit in self.fruits_list:
                 if fruit != other_fruit:
                     other_fruit_rect = pygame.Rect(other_fruit.pos.x - other_fruit.radius, other_fruit.pos.y - other_fruit.radius, 2 * other_fruit.radius, 2 * other_fruit.radius)
@@ -99,6 +105,7 @@ class Fruits:
                             # Adjust the division factor as needed
                             division_factor = 2
 
+                            # Velocities adjustment
                             fruit.vel.x = -fruit.vel.x / division_factor
                             fruit.vel.y = -fruit.vel.y / division_factor
                             other_fruit.vel.x = -other_fruit.vel.x / division_factor
@@ -114,6 +121,14 @@ class Fruits:
                                 other_fruit.vel.x = 0
                             if abs(other_fruit.vel.y) < min_velocity_threshold:
                                 other_fruit.vel.y = 0
+
+                            # Ensure no overlap
+                            overlap_x = fruit_rect.right - other_fruit_rect.left if fruit.vel.x > 0 else other_fruit_rect.right - fruit_rect.left
+                            overlap_y = fruit_rect.bottom - other_fruit_rect.top if fruit.vel.y > 0 else other_fruit_rect.bottom - fruit_rect.top
+                            fruit.pos.x += overlap_x / 2
+                            fruit.pos.y += overlap_y / 2
+                            other_fruit.pos.x -= overlap_x / 2
+                            other_fruit.pos.y -= overlap_y / 2
 
                         else:
                             fruit.collision_detected = False
