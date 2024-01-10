@@ -125,10 +125,10 @@ class Fruits:
                             # Ensure no overlap
                             overlap_x = fruit_rect.right - other_fruit_rect.left if fruit.vel.x > 0 else other_fruit_rect.right - fruit_rect.left
                             overlap_y = fruit_rect.bottom - other_fruit_rect.top if fruit.vel.y > 0 else other_fruit_rect.bottom - fruit_rect.top
-                            fruit.pos.x += overlap_x / 2
-                            fruit.pos.y += overlap_y / 2
-                            other_fruit.pos.x -= overlap_x / 2
-                            other_fruit.pos.y -= overlap_y / 2
+                            fruit.pos.x += overlap_x / 20
+                            fruit.pos.y += overlap_y / 20
+                            other_fruit.pos.x -= overlap_x / 20
+                            other_fruit.pos.y -= overlap_y / 20
 
                         else:
                             fruit.collision_detected = False
