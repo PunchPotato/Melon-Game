@@ -10,6 +10,7 @@ class FruitGame:
         self.screen_height = 800
         self.screen = pygame.display.set_mode((self.screen_width, self.screen_height))
         self.clock = pygame.time.Clock()
+        self.bg_image = pygame.image.load("assets\my fruit background 2.png")
 
         self.skewed_probability = [0.7, 0.1, 0.05, 0.08, 0.04, 0.02, 0.01, 0, 0]
         self.colors = [(255, 255, 255), (255, 0, 0), (255, 165, 0), (255, 255, 0),
@@ -148,18 +149,13 @@ class FruitGame:
 
     def run_game(self):
         while self.running:
-            self.screen.fill((0, 0, 0))
+            self.screen.blit(self.bg_image,(0, 0))
             self.handle_events()
 
             if not self.game_over:
                 self.check_collision()
                 self.update_fruits()
-
-                # Draw 3 lines to make a rectangle with the upper side open
-                pygame.draw.line(self.screen, (255, 255, 255), (40, 40), (40, 720), 1)
-                pygame.draw.line(self.screen, (255, 255, 255), (40, 720), (560, 720), 1)
-                pygame.draw.line(self.screen, (255, 255, 255), (560, 720), (560, 40), 1)
-
+                
                 # Draw a warning line at the top of the box with a red dotted line
                 dotted_line_y = 40
                 dotted_line_length = 4
