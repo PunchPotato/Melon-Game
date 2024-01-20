@@ -13,11 +13,14 @@ class FruitGame:
         self.bg_image = pygame.image.load("assets\my fruit background 2.png")
 
         self.skewed_probability = [0.7, 0.1, 0.05, 0.08, 0.04, 0.02, 0.01, 0, 0]
-        self.colors = [(255, 255, 255), (255, 0, 0), (255, 165, 0), (255, 255, 0),
+        self.colours = [(255, 255, 255), (255, 0, 0), (255, 165, 0), (255, 255, 0),
                        (0, 255, 0), (0, 0, 255), (255, 0, 255), (255, 105, 180), (128, 0, 128)]
-        self.color_order = self.colors.copy()
+        self.colour_order = self.colours.copy()
         self.radius_order = [15, 22, 42, 55, 68, 85, 94, 110, 130]
         self.gravity = 0.05
+
+        self.strawberry = pygame.image.load("Assets/strawberry.png")
+        self.berry = pygame.image.load("Assets/berry.png")
 
         self.fruits = []
         self.fruits_to_add = []
@@ -41,10 +44,10 @@ class FruitGame:
         pygame.display.set_caption("Fruit Game")
 
     def setup_game(self):
-        self.next_fruit_index = random.choices(range(len(self.color_order)),
+        self.next_fruit_index = random.choices(range(len(self.colour_order)),
                                               weights=self.skewed_probability, k=1)[0]
         self.next_fruit_radius = self.radius_order[self.next_fruit_index]
-        self.next_fruit_color = self.color_order[self.next_fruit_index]
+        self.next_fruit_colour = self.colour_order[self.next_fruit_index]
 
     def handle_events(self):
         for event in pygame.event.get():
@@ -62,19 +65,19 @@ class FruitGame:
             horizontal_speed = 0
             is_dropping = True
             self.fruits.append(Fruit(fruit_x, fruit_y, self.fruit_speed,
-                                   horizontal_speed, self.next_fruit_color,
+                                   horizontal_speed, self.next_fruit_colour,
                                    self.next_fruit_radius, is_dropping))
             self.update_next_fruit()
 
     def handle_mouse_motion(self, event):
         mouse_x = event.pos[0]
         mouse_y = 25
-        pygame.draw.circle(self.screen, self.next_fruit_color, (mouse_x, mouse_y), self.next_fruit_radius)
+        pygame.draw.circle(self.screen, self.next_fruit_colour, (mouse_x, mouse_y), self.next_fruit_radius)
 
     def update_next_fruit(self):
-        self.next_fruit_index = random.choices(range(len(self.color_order)),
+        self.next_fruit_index = random.choices(range(len(self.colour_order)),
                                               weights=self.skewed_probability, k=1)[0]
-        self.next_fruit_color = self.color_order[self.next_fruit_index]
+        self.next_fruit_colour = self.colour_order[self.next_fruit_index]
         self.next_fruit_radius = self.radius_order[self.next_fruit_index]
 
     def check_collision(self):
@@ -85,18 +88,18 @@ class FruitGame:
                 dy = self.fruits[i].y - self.fruits[j].y
                 distance = math.sqrt(dx ** 2 + dy ** 2)
                 if distance < self.fruits[i].radius + self.fruits[j].radius:
-                    if self.fruits[i].color == self.fruits[j].color:
-                        color_index = self.color_order.index(self.fruits[i].color)
-                        if color_index == len(self.color_order) - 1:
-                            self.score += self.score_order[color_index] * 2
-                        if color_index + 1 < len(self.color_order):
+                    if self.fruits[i].colour == self.fruits[j].colour:
+                        colour_index = self.colour_order.index(self.fruits[i].colour)
+                        if colour_index == len(self.colour_order) - 1:
+                            self.score += self.score_order[colour_index] * 2
+                        if colour_index + 1 < len(self.colour_order):
                             new_x = (self.fruits[i].x + self.fruits[j].x) / 2 + random.uniform(-1, 1)
                             new_y = (self.fruits[i].y + self.fruits[j].y) / 2 + random.uniform(0, 1)
                             self.fruits_to_add.append(Fruit(new_x, new_y, self.fruits[i].speed,
                                                            self.fruits[i].horizontal_speed + self.fruits[j].horizontal_speed,
-                                                           self.color_order[color_index + 1],
-                                                           self.radius_order[color_index + 1], False))
-                            self.score += self.score_order[color_index + 1]
+                                                           self.colour_order[colour_index + 1],
+                                                           self.radius_order[colour_index + 1], False))
+                            self.score += self.score_order[colour_index + 1]
                         self.fruits_to_remove.append(self.fruits[i])
                         self.fruits_to_remove.append(self.fruits[j])
                         break
@@ -145,7 +148,7 @@ class FruitGame:
             elif fruit.x > box_right:
                 fruit.x = box_right - 1
                 fruit.horizontal_speed *= -0.5
-            pygame.draw.circle(self.screen, fruit.color, (int(fruit.x), int(fruit.y)), fruit.radius)
+            pygame.draw.circle(self.screen, fruit.colour, (int(fruit.x), int(fruit.y)), fruit.radius)
 
     def run_game(self):
         while self.running:
@@ -160,16 +163,16 @@ class FruitGame:
                 dotted_line_y = 40
                 dotted_line_length = 4
                 dotted_line_space = 4
-                dotted_line_color = (128, 128, 128)
+                dotted_line_colour = (128, 128, 128)
                 for x in range(40, 560, dotted_line_length + dotted_line_space):
-                    pygame.draw.line(self.screen, dotted_line_color, (x, dotted_line_y),
+                    pygame.draw.line(self.screen, dotted_line_colour, (x, dotted_line_y),
                                      (x + dotted_line_length, dotted_line_y), 1)
 
-                # Draw color order
-                color_order_y = self.screen_height - 20
-                color_order_spacing = 40
-                for i, color in enumerate(self.color_order):
-                    pygame.draw.circle(self.screen, color, (40 + i * color_order_spacing, color_order_y), 10)
+                # Draw colour order
+                colour_order_y = self.screen_height - 20
+                colour_order_spacing = 40
+                for i, colour in enumerate(self.colour_order):
+                    pygame.draw.circle(self.screen, colour, (40 + i * colour_order_spacing, colour_order_y), 10)
 
                 # Draw score
                 font = pygame.font.Font(None, 36)
